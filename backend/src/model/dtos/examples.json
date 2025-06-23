@@ -1,0 +1,214 @@
+{
+  "auth": {
+    "login": {
+      "description": "Fazer login no sistema",
+      "endpoint": "POST /auth/signin",
+      "payload": {
+        "email": "usuario@exemplo.com",
+        "password": "senha123456"
+      }
+    },
+    "changePassword": {
+      "description": "Alterar senha do usuário",
+      "endpoint": "PUT /users/:id/change-password",
+      "payload": {
+        "currentPassword": "senha123456",
+        "newPassword": "novaSenha789"
+      }
+    }
+  },
+  "users": {
+    "create": {
+      "description": "Criar novo usuário",
+      "endpoint": "POST /users",
+      "payload": {
+        "name": "João Silva",
+        "email": "joao.silva@exemplo.com",
+        "password": "senha123456",
+        "profileImageUrl": "https://exemplo.com/fotos/joao.jpg",
+        "role": "ATLETA"
+      },
+      "notes": "role é opcional, valores válidos: ADM, ATLETA"
+    },
+    "update": {
+      "description": "Atualizar usuário existente",
+      "endpoint": "PUT /users/:id",
+      "payload": {
+        "name": "João Silva Santos",
+        "email": "joao.santos@exemplo.com",
+        "password": "novaSenha123",
+        "profileImageUrl": "https://exemplo.com/fotos/joao-novo.jpg",
+        "role": "ADM",
+        "status": true
+      },
+      "notes": "Todos os campos são opcionais"
+    }
+  },
+  "equipment": {
+    "create": {
+      "description": "Criar novo equipamento",
+      "endpoint": "POST /equipment",
+      "payload": {
+        "name": "Bola de Vôlei",
+        "amount": 10,
+        "imageUrl": "https://exemplo.com/imagens/bola-volei.jpg",
+        "esportIds": [1, 2]
+      },
+      "notes": "esportIds é opcional, array de IDs dos esportes relacionados"
+    },
+    "update": {
+      "description": "Atualizar equipamento existente",
+      "endpoint": "PUT /equipment/:id",
+      "payload": {
+        "name": "Bola de Vôlei Profissional",
+        "amount": 15,
+        "imageUrl": "https://exemplo.com/imagens/bola-volei-pro.jpg",
+        "esportIds": [1, 2, 3]
+      },
+      "notes": "Todos os campos são opcionais"
+    }
+  },
+  "esports": {
+    "create": {
+      "description": "Criar novo esporte",
+      "endpoint": "POST /esports",
+      "payload": {
+        "name": "Vôlei de Praia"
+      }
+    },
+    "update": {
+      "description": "Atualizar esporte existente",
+      "endpoint": "PUT /esports/:id",
+      "payload": {
+        "name": "Vôlei de Praia Profissional"
+      },
+      "notes": "Campo name é opcional"
+    }
+  },
+  "loans": {
+    "create": {
+      "description": "Criar novo empréstimo",
+      "endpoint": "POST /loans",
+      "payload": {
+        "startDate": "2024-01-15T10:00:00.000Z",
+        "endDate": "2024-01-15T18:00:00.000Z",
+        "amount": 2,
+        "userId": 1,
+        "equipmentId": 1,
+        "status": "SCHEDULED"
+      },
+      "notes": "status é opcional, valores válidos: SCHEDULED, IN_PROGRESS, RETURNED, PENDING"
+    },
+    "update": {
+      "description": "Atualizar empréstimo existente",
+      "endpoint": "PUT /loans/:id",
+      "payload": {
+        "startDate": "2024-01-15T11:00:00.000Z",
+        "endDate": "2024-01-15T19:00:00.000Z",
+        "amount": 3,
+        "status": "IN_PROGRESS"
+      },
+      "notes": "Todos os campos são opcionais"
+    }
+  },
+  "equipment_relationships": {
+    "addEsportToEquipment": {
+      "description": "Adicionar esporte ao equipamento",
+      "endpoint": "POST /equipment/:equipmentId/esport/:esportId",
+      "url_params": {
+        "equipmentId": 1,
+        "esportId": 2
+      },
+      "notes": "Não requer body, usa parâmetros na URL"
+    },
+    "removeEsportFromEquipment": {
+      "description": "Remover esporte do equipamento",
+      "endpoint": "DELETE /equipment/:equipmentId/esport/:esportId",
+      "url_params": {
+        "equipmentId": 1,
+        "esportId": 2
+      },
+      "notes": "Não requer body, usa parâmetros na URL"
+    }
+  },
+  "enums": {
+    "roles": {
+      "description": "Valores válidos para campo role",
+      "values": ["ADM", "ATLETA"]
+    },
+    "loanStatus": {
+      "description": "Valores válidos para campo status de empréstimo",
+      "values": ["SCHEDULED", "IN_PROGRESS", "RETURNED", "PENDING"]
+    }
+  },
+  "examples": {
+    "complete_workflow": {
+      "description": "Exemplo de fluxo completo para criar um sistema de empréstimos",
+      "steps": [
+        {
+          "step": 1,
+          "action": "Criar usuário administrador",
+          "endpoint": "POST /users",
+          "payload": {
+            "name": "Administrador",
+            "email": "admin@beachunivr.com",
+            "password": "admin123456",
+            "role": "ADM"
+          }
+        },
+        {
+          "step": 2,
+          "action": "Fazer login",
+          "endpoint": "POST /auth/signin",
+          "payload": {
+            "email": "admin@beachunivr.com",
+            "password": "admin123456"
+          }
+        },
+        {
+          "step": 3,
+          "action": "Criar esporte",
+          "endpoint": "POST /esports",
+          "payload": {
+            "name": "Vôlei de Praia"
+          }
+        },
+        {
+          "step": 4,
+          "action": "Criar equipamento",
+          "endpoint": "POST /equipment",
+          "payload": {
+            "name": "Bola de Vôlei",
+            "amount": 5,
+            "imageUrl": "https://exemplo.com/bola-volei.jpg",
+            "esportIds": [1]
+          }
+        },
+        {
+          "step": 5,
+          "action": "Criar usuário atleta",
+          "endpoint": "POST /users",
+          "payload": {
+            "name": "João Atleta",
+            "email": "joao@exemplo.com",
+            "password": "senha123456",
+            "role": "ATLETA"
+          }
+        },
+        {
+          "step": 6,
+          "action": "Criar empréstimo",
+          "endpoint": "POST /loans",
+          "payload": {
+            "startDate": "2024-01-20T09:00:00.000Z",
+            "endDate": "2024-01-20T17:00:00.000Z",
+            "amount": 1,
+            "userId": 2,
+            "equipmentId": 1,
+            "status": "SCHEDULED"
+          }
+        }
+      ]
+    }
+  }
+} 
