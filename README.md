@@ -47,7 +47,7 @@ npm run dev
 ## 🔧 Configuração
 
 ### Credenciais de Teste
-- **Email**: `teste@beachunirv.com`
+- **Email**: `teste@academico.unirv.edu.br`
 - **Senha**: `123456`
 
 ### Endpoints da API
